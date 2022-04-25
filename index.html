@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <title>CEP</title>
+</head>
+<body>
+    <div class="container col-md-5">
+        <form>
+          <div class="form-group font-weight-bold">
+            <label>CEP</label>
+            <input type="text" id="cep" pattern= "\d{5}-?\d{3}" class="form-control" required placeholder="Insira o seu CEP">
+          </div>
+          <button type="submit" id="btnPesquisar" class="btn btn-primary mt-3">Pesquisa</button>
+          <div id="resultado" style="display: none;">
+            <div class="form-group font-weight-bold">
+              <label>Rua</label>
+              <input type="text" class="form-control" id="logradouro" placeholder="...">
+            </div>
+            <div class="form-group font-weight-bold">
+              <label>Complemento</label>
+              <input type="text" class="form-control" id="complemento" placeholder="...">
+            </div>
+            <div class="form-group font-weight-bold">
+              <label>Bairro</label>
+              <input type="text" class="form-control" id="bairro" placeholder="...">
+            </div>
+            <div class="form-group font-weight-bold">
+              <label>Cidade</label>
+              <input type="text" class="form-control" id="localidade" placeholder="...">
+            </div>
+            <div class="form-group font-weight-bold">
+              <label>Estado</label>
+              <input type="text" class="form-control" id="uf" placeholder="...">
+            </div>
+            <button type="button" id="btnLimpar" class="btn btn-danger mt-3">Limpar</button>
+          </div>
+        </form>
+    </div>
+    <script type="text/javascript" src="cep.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="node_modules/jquery-mask-plugin/dist/jquery.mask.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function (){
+        $('#cep').mask('00000-000');
+      })
+    </script>
+</body>
+</html>
