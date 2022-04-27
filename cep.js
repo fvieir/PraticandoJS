@@ -7,6 +7,7 @@ let limpar = document.querySelector('#btnLimpar')
 // })
 
 pesquisar.addEventListener('click', event => {
+    loading(true)
     showData(event)
 })
 
@@ -18,6 +19,7 @@ limpar.addEventListener('click', event => {
     document.querySelector('#localidade').value = ''
     document.querySelector('#uf').value = ''
     document.querySelector('#resultado').style.display = 'none'
+    pesquisar.style.display = 'block'
 })
 
 // function getCep(event) {
@@ -49,14 +51,18 @@ limpar.addEventListener('click', event => {
 /* asycn - await */
 
 function getCep (cep) {
+    let validate = validation(cep)
+    
+    if (validate) {
+        return 
+    }
+    
     let url = `https://viacep.com.br/ws/${cep}/json/`
-        return fetch(url)
-            .then(data => data.json())
-            .catch(err => {
-                validation()
-                loading()
-                console.log(err)
-            })
+    return fetch(url)
+        .then(data => data.json())
+        .catch(err => {
+            console.log(err)
+        })
 }
 
 async function showData (event) {
@@ -64,19 +70,21 @@ async function showData (event) {
         event.preventDefault()
         let resultado = document.querySelector('#resultado')  
 
-        loading(true)
-        
         let inputCep = document.querySelector('#cep').value
         let cepReplace = inputCep.replace('-','')
         const cep = await getCep(cepReplace)
-        
-        for (const campo in cep) {
-            if(document.querySelector(`#${campo}`)){
-                document.querySelector(`#${campo}`).value = cep[campo]
-                loading()
-                resultado.style.display = 'block'
+
+        if(typeof cep !== 'undefined') {
+            for (const campo in cep) {
+                if(document.querySelector(`#${campo}`)){
+                    document.querySelector(`#${campo}`).value = cep[campo]
+                    resultado.style.display = 'block'
+                }
             }
-        }
+
+            pesquisar.style.display = 'none'
+        } 
+        loading()
     } catch (error) {
         loading()
         console.log(error)
@@ -89,11 +97,20 @@ function loading(load = false) {
     
     if (load) {
         spinnerGrow.style.display = 'block'
-    } else {
-        spinnerGrow.style.display = 'none'
+        return
     }
+    
+    spinnerGrow.style.display = 'none'
+    
+
 }
 
-function validation (must = false) {
-    let required = document.querySelector('#required')
-    (must) ? console.log('entrou no if') : console.log('entrou no else')}
+function validation (cep) {
+    if (!cep) {
+        let required = document.querySelector('#required')
+        required.style.display = 'block'
+        return true
+    }
+
+    required.style.display = 'none'
+}
